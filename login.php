@@ -37,7 +37,7 @@ if (isset($_POST['login'])) {
 			
 			// Update last login time 
 			$update = $conn->prepare("UPDATE users SET last_login = NOW() WHERE user_id = ?");
-			$update->bind_param("I", $row['user_id']);
+			$update->bind_param("i", $row['user_id']);
 			$update->execute();
 			$update->close();
 	
