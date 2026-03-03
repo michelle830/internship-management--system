@@ -76,6 +76,7 @@ $user = $result->fetch_assoc();
 	<h3>Navigation</h3>
 	<ul>
 		<li><a href="manage_students.php">Manage Students</a></li>
+		<li><a href="manage_internships.php">Manage Internships</a></li>
 		<li><a href="register_user.php">Register New User (Admin Only)</a></li>
 		<li><a href="logout.php">Logout</a></li>
 	</ul>
