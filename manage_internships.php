@@ -8,6 +8,8 @@ Features:
 - Edit internship details
 - Delete internship
 - Display all internships
+- Duration restricted to 3, 6, 9 or 12 months
+- End date must match chosen duration
 */
 
 session_start();
@@ -21,6 +23,17 @@ if(!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
 
 $message = ""; // Feedback message
 
+// Helper function to validate duration
+function validateDuration($start_date, $end_date, $duration) {
+	$start = new DateTime($start_date);
+	$end = new DateTime($end_date);
+
+	$expected_end = clone $start;
+	$expected_end->modify("+$duration months");
+
+	return $end->format("Y-m-d") == $expected_end->format("Y-m-d");
+}
+
 // Handle Add Internship
 if(isset($_POST['add'])) {
 	$student_id = $_POST['student_id'];
@@ -31,15 +44,21 @@ if(isset($_POST['add'])) {
 	$start_date = $_POST['start_date'];
 	$end_date = $_POST['end_date'];
 
-	$stmt = $conn->prepare("INSERT INTO internships (student_id, assessor_id, company_name, supervisor_name, duration, start_date, end_date) VALUES (?, ?, ?, ?, ?, ?, ?)");
-	$stmt->bind_param("iisssss", $student_id, $assessor_id, $company_name, $supervisor_name, $duration, $start_date, $end_date);
-
-	if($stmt->execute()) {
-		$message = "Internship added successfully!";
+	if(!in_array($duration, ["3", "6", "9", "12"])) {
+		$message = "Error: Duration must be 3, 6, 9, or 12 months.";
+	} elseif(!validateDuration($start_date, $end_date, $duration)) {
+		$message = "Error: End date must be exactly $duration months after start date.";
 	} else {
-		$message = "Error: Could not add internship.";
-	}	
-	$stmt->close();
+		$stmt = $conn->prepare("INSERT INTO internships (student_id, assessor_id, company_name, supervisor_name, duration, start_date, end_date) VALUES (?, ?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param("iisssss", $student_id, $assessor_id, $company_name, $supervisor_name, $duration, $start_date, $end_date);
+
+		if($stmt->execute()) {
+			$message = "Internship added successfully!";
+		} else {
+			$message = "Error: Could not add internship.";
+		}	
+		$stmt->close();
+	}
 }
 
 // Handle Update Internship
@@ -51,15 +70,21 @@ if(isset($_POST['update'])) {
     	$start_date = $_POST['start_date'];
 	$end_date = $_POST['end_date'];
 
-    	$stmt = $conn->prepare("UPDATE internships SET company_name=?, supervisor_name=?, duration=?, start_date=?, end_date=? WHERE internship_id=?");
-    	$stmt->bind_param("sssi", $company_name, $supervisor_name, $duration, $start_date, $end_date, $internship_id);
+	if(!in_array($duration, ["3", "6", "9", "12"])) {
+		$message = "Error: Duration must be 3, 6, 9, or 12 months.";
+	} elseif(!validateDuration($start_date, $end_date, $duration)) {
+		$message = "Error: End date must be exactly $duration months after start date.";
+	} else {
+		$stmt = $conn->prepare("UPDATE internships SET company_name=?, supervisor_name=?, duration=?, start_date=?, end_date=? WHERE internship_id=?");
+    		$stmt->bind_param("sssssi", $company_name, $supervisor_name, $duration, $start_date, $end_date, $internship_id);
 	
-    	if($stmt->execute()) {
-        	$message = "Internship updated successfully!";
-    	} else {
-        	$message = "Error: Could not update internship.";
-    	}
-    	$stmt->close();
+    		if($stmt->execute()) {
+        		$message = "Internship updated successfully!";
+    		} else {
+        		$message = "Error: Could not update internship.";
+    		}
+    		$stmt->close();
+	}
 }
 
 // Handle Delete Internship
@@ -132,7 +157,14 @@ $assessors = $conn->query("SELECT user_id, full_name FROM users WHERE role='asse
 
         	Company: <input type="text" name="company_name" required><br><br>
         	Supervisor: <input type="text" name="supervisor_name" required><br><br>
-        	Duration: <input type="text" name="duration" required><br><br>
+        	Duration: 
+		<select name="duration" required>
+			<option value="">--Select Duration --</option>
+			<option value="3">3 Months</option>
+			<option value="6">6 Months</option>
+			<option value="9">9 Months</option>
+			<option value="12">12 Months</option>
+		</select><br><br>
 		Start Date: <input type="date" name="start_date" required><br><br>
 		End Date: <input type="date" name="end_date" required><br><br>
         	<button type="submit" name="add">Add Internship</button>
@@ -143,7 +175,7 @@ $assessors = $conn->query("SELECT user_id, full_name FROM users WHERE role='asse
     	<h3>Internship Records</h3>
     	<table border="1" cellpadding="5">
         	<tr>
-            		<th>ID</th><th>Student</th><th>Assessor</th><th>Company</th><th>Supervisor</th><th>Duration</th><th>Actions</th>
+            		<th>ID</th><th>Student</th><th>Assessor</th><th>Company</th><th>Supervisor</th><th>Duration</th><th>Start Date</th><th>End Date</th><th>Actions</th>
         	</tr>
         	<?php while($row = $result->fetch_assoc()) { ?>
         	<tr>
@@ -161,7 +193,13 @@ $assessors = $conn->query("SELECT user_id, full_name FROM users WHERE role='asse
                     			<input type="hidden" name="internship_id" value="<?php echo $row['internship_id']; ?>">
                     			Company: <input type="text" name="company_name" value="<?php echo htmlspecialchars($row['company_name']); ?>">
                     			Supervisor: <input type="text" name="supervisor_name" value="<?php echo htmlspecialchars($row['supervisor_name']); ?>">
-					Duration: <input type="text" name="duration" value="<?php echo htmlspecialchars($row['duration']); ?>">
+					Duration: 
+					<select name="duration" required>
+						<option value="3" <?php if($row['duration']=="3") echo "selected"; ?>>3 Months</option> 
+						<option value="6" <?php if($row['duration']=="6") echo "selected"; ?>>6 Months</option> 
+						<option value="9" <?php if($row['duration']=="9") echo "selected"; ?>>9 Months</option> 
+						<option value="12" <?php if($row['duration']=="12") echo "selected"; ?>>12 Months</option> 
+					</select><br><br>
                     			Start Date: <input type="text" name="start_date" value="<?php echo htmlspecialchars($row['start_date']); ?>">
 					End Date: <input type="date" name="end_date" value="<?php echo htmlspecialchars($row['end_date']); ?>">
                     			<button type="submit" name="update">Update</button>
