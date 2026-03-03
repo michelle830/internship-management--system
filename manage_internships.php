@@ -26,11 +26,13 @@ if(isset($_POST['add'])) {
 	$student_id = $_POST['student_id'];
 	$assessor_id = $_POST['assessor_id'];
 	$company_name = trim($_POST['company_name']);
-	$supervisor_name = trim($_POST['supervisor_name']);
+	$supervisor = trim($_POST['supervisor_name']);
 	$duration = trim($_POST['duration']);
+	$start_date = $_POST['start_date'];
+	$end_date = $_POST['end_date'];
 
-	$stmt = $conn->prepare("INSERT INTO internships (student_id, assessor_id, company_name, supervisor_name, duration) VALUES (?, ?, ?, ?, ?)");
-	$stmt->bind_param("iisss", $student_id, $assessor_id, $company_name, $supervisor_name, $duration);
+	$stmt = $conn->prepare("INSERT INTO internships (student_id, assessor_id, company_name, supervisor_name, duration, start_date, end_date) VALUES (?, ?, ?, ?, ?, ?, ?)");
+	$stmt->bind_param("iisssss", $student_id, $assessor_id, $company_name, $supervisor_name, $duration, $start_date, $end_date);
 
 	if($stmt->execute()) {
 		$message = "Internship added successfully!";
@@ -44,11 +46,13 @@ if(isset($_POST['add'])) {
 if(isset($_POST['update'])) {
 	$internship_id = $_POST['internship_id'];
 	$company_name = trim($_POST['company_name']);
-	$supervisor_name = trim($_POST['supervisor_name']);
-    	$duration = trim($_POST['duration']);
+	$supervisor = trim($_POST['supervisor_name']);
+	$duration = trim($_POST['duration']);
+    	$start_date = $_POST['start_date'];
+	$end_date = $_POST['end_date'];
 
-    	$stmt = $conn->prepare("UPDATE internships SET company_name=?, supervisor_name=?, duration=? WHERE internship_id=?");
-    	$stmt->bind_param("sssi", $company_name, $supervisor_name, $duration, $internship_id);
+    	$stmt = $conn->prepare("UPDATE internships SET company_name=?, supervisor_name=?, duration=?, start_date=?, end_date=? WHERE internship_id=?");
+    	$stmt->bind_param("sssi", $company_name, $supervisor, $duration, $start_date, $end_date, $internship_id);
 	
     	if($stmt->execute()) {
         	$message = "Internship updated successfully!";
@@ -62,19 +66,23 @@ if(isset($_POST['update'])) {
 if(isset($_GET['delete'])) {
     	$internship_id = $_GET['delete'];
 
-    	$stmt = $conn->prepare("DELETE FROM internships WHERE internship_id=?");
-    	$stmt->bind_param("i", $internship_id);
+	if(is_numeric($internship_id)) {
+    		$stmt = $conn->prepare("DELETE FROM internships WHERE internship_id=?");
+    		$stmt->bind_param("i", $internship_id);
 
-    	if($stmt->execute()) {
-        	$message = "Internship deleted successfully!";
-    	} else {
-        	$message = "Error: Could not delete internship.";
-    	}
-    	$stmt->close();
+    		if($stmt->execute()) {
+        		$message = "Internship deleted successfully!";
+    		} else {
+        		$message = "Error: Could not delete internship.";
+    		}
+    		$stmt->close();
+	} else {
+		$message = "Invalid internship ID.";
+	}
 }
 
 // Fetch all internships with student + assessor names
-$sql = "SELECT i.internship_id, s.matric_no, s.student_name, u.full_name AS assessor_name, i.company_name, i.supervisor_name, i.duration
+$sql = "SELECT i.internship_id, s.matric_no, s.student_name, u.full_name AS assessor_name, i.company_name, i.supervisor_name, i.duration, i.start_date, i.end_date
         FROM internships i
         JOIN students s ON i.student_id = s.student_id
         JOIN users u ON i.assessor_id = u.user_id
@@ -125,6 +133,8 @@ $assessors = $conn->query("SELECT user_id, full_name FROM users WHERE role='asse
         	Company: <input type="text" name="company_name" required><br><br>
         	Supervisor: <input type="text" name="supervisor_name" required><br><br>
         	Duration: <input type="text" name="duration" required><br><br>
+		Start Date: <input type="date" name="start_date" required><br><br>
+		End Date: <input type="date" name="end_date" required><br><br>
         	<button type="submit" name="add">Add Internship</button>
     	</form>
     	<hr>
@@ -142,14 +152,18 @@ $assessors = $conn->query("SELECT user_id, full_name FROM users WHERE role='asse
             		<td><?php echo htmlspecialchars($row['assessor_name']); ?></td>
             		<td><?php echo htmlspecialchars($row['company_name']); ?></td>
             		<td><?php echo htmlspecialchars($row['supervisor_name']); ?></td>
-            		<td><?php echo htmlspecialchars($row['duration']); ?></td>
+			<td><?php echo htmlspecialchars($row['duration']); ?></td>
+            		<td><?php echo htmlspecialchars($row['start_date']); ?></td>
+			<td><?php echo htmlspecialchars($row['end_date']); ?></td>
             		<td>
                 		<!-- Edit Form -->
                 		<form method="POST" style="display:inline;">
                     			<input type="hidden" name="internship_id" value="<?php echo $row['internship_id']; ?>">
                     			Company: <input type="text" name="company_name" value="<?php echo htmlspecialchars($row['company_name']); ?>">
                     			Supervisor: <input type="text" name="supervisor_name" value="<?php echo htmlspecialchars($row['supervisor_name']); ?>">
-                    			Duration: <input type="text" name="duration" value="<?php echo htmlspecialchars($row['duration']); ?>">
+					Duration: <input type="text" name="duration" value="<?php echo htmlspecialchars($row['duration']); ?>">
+                    			Start Date: <input type="text" name="start_date" value="<?php echo htmlspecialchars($row['start_date']); ?>">
+					End Date: <input type="date" name="end_date" value="<?php echo htmlspecialchars($row['end_date']); ?>">
                     			<button type="submit" name="update">Update</button>
                 		</form>
                 		<!-- Delete Link -->
