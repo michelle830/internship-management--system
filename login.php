@@ -17,8 +17,8 @@ $error = "";
 if (isset($_POST['login'])) {
 	
 	// Get username and password from form
-	$username = $_POST['username'];
-	$password = $_POST['password'];
+	$username = trim($_POST['username']);
+	$password = trim($_POST['password']);
 
 	// Prepare SQL statement to prevent SQL injection
 	$stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
