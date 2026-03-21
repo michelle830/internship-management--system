@@ -66,7 +66,6 @@ $stmt->close();
 	<h3>Navigation</h3>
 	<ul>
 		<li><a href="view_assigned_students.php">View Assigned Students</a></li>
-		<li><a href="#">Submit Assessment</a></li>
 		<li><a href="manage_assessments.php">Manage Assessments</a></li>
 		<li><a href="logout.php">Logout</a></li>
 	</ul>
