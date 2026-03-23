@@ -2,84 +2,76 @@
 /*
 LOGIN.php - User Login Page
 Purpose: Authenticate Admin and Assessor users
+Features:
+- Session validation
+- Role-based redirection
+- Last login update
+- Default password enforcement (redirect to change_password.php)
 */
 
-// Start session to store login information
 session_start();
-
-// Include database connection
 include("includes/config.php");
 
-// Initialize error message
 $error = "";
 
-// Check if the login form is submitted
 if (isset($_POST['login'])) {
-	
-	// Get username and password from form
-	$username = trim($_POST['username']);
-	$password = trim($_POST['password']);
+    	$username = trim($_POST['username']);
+    	$password = trim($_POST['password']);
 
-	// Prepare SQL statement to prevent SQL injection
-	$stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-	$stmt->bind_param("s", $username);
-	$stmt->execute();
+    	$stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    	$stmt->bind_param("s", $username);
+    	$stmt->execute();
+    	$result = $stmt->get_result();
 
-	// Get the result
-	$result = $stmt->get_result();
+    	if ($result->num_rows == 1) {
+        	$row = $result->fetch_assoc();
 
-	if($result->num_rows == 1) {
-		// Fetch user data
-		$row = $result->fetch_assoc();
+        	if (password_verify($password, $row['password'])) {
+            		// Update last login
+            		$update = $conn->prepare("UPDATE users SET last_login = NOW() WHERE user_id = ?");
+            		$update->bind_param("i", $row['user_id']);
+            		$update->execute();
+            		$update->close();
 
-		// Check password
-		if (password_verify ($password, $row['password'])) {
-			
-			// Update last login time 
-			$update = $conn->prepare("UPDATE users SET last_login = NOW() WHERE user_id = ?");
-			$update->bind_param("i", $row['user_id']);
-			$update->execute();
-			$update->close();
-	
-			// Store user info in session variables
-			$_SESSION['user_id'] = $row['user_id'];
-			$_SESSION['role'] = $row['role'];
-			$_SESSION['full_name'] = $row['full_name'];
-			$_SESSION['last_activity'] = time();
+            		// Store session info
+            		$_SESSION['user_id'] = $row['user_id'];
+            		$_SESSION['role'] = $row['role'];
+            		$_SESSION['full_name'] = $row['full_name'];
+            		$_SESSION['last_activity'] = time();
 
-			// Redirect based on role
-			if ($row['role'] == 'admin') {
-				header("Location: admin_dashboard.php");
-			} else {
-				header("Location: assessor_dashboard.php");
-			}
-			exit();
-		} else {
-			$error = "Incorrect password!";
-		} 
-	} else {
-		$error = "Username not found!";
-	}
+            		// 🚨 Check if still using default password
+            		if ($row['is_default_password'] == 1) {
+                		header("Location: change_password.php");
+                		exit();
+            		}
+
+            		// Redirect based on role
+            		if ($row['role'] == 'admin') {
+                		header("Location: admin_dashboard.php");
+            		} else {
+                		header("Location: assessor_dashboard.php");
+            		}
+            		exit();
+        	} else {
+            		$error = "Incorrect password!";
+        	}
+    	} else {
+        	$error = "Username not found!";
+    	}
 }
 ?>
-
-<!-- HTML part: Display login form -->
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Login - Internship System</title>
+    	<title>Login - Internship System</title>
 </head>
 <body>
-	<h2>Login</h2>
-	
-	<!-- Show error if exists -->
-	<?php if($error != "") echo "<p style='color:red'>$error</p>";?>
-	
-	<!-- Login form -->
-	<form method="POST">
-		Username: <input type="text" name="username" required><br><br>
-		Password: <input type="password" name="password" required><br><br>
-		<button type="submit" name="login">Login</button>
-	</form>
+    	<h2>Login</h2>
+    	<?php if($error != "") echo "<p style='color:red'>$error</p>";?>
+    	<form method="POST">
+        	Username: <input type="text" name="username" required><br><br>
+        	Password: <input type="password" name="password" required><br><br>
+        	<button type="submit" name="login">Login</button>
+    	</form>
 </body>
 </html>
