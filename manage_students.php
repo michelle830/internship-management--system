@@ -23,20 +23,31 @@ $message = "";	// Feedback message
 
 // Handle Add Student
 if(isset($_POST['add'])){
-	$matric_no = trim($_POST['matric_no']);
-	$student_name = trim($_POST['student_name']);
-	$programme = trim($_POST['programme']);
+    	$student_name = trim($_POST['student_name']);
+    	$programme = trim($_POST['programme']);
 
-	$stmt = $conn->prepare("INSERT INTO students (matric_no, student_name, programme) VALUES (?, ?, ?)");
-	$stmt->bind_param("sss", $matric_no, $student_name, $programme);
+    	// Get latest matric number
+    	$result = $conn->query("SELECT matric_no FROM students ORDER BY student_id DESC LIMIT 1");
+    	if($row = $result->fetch_assoc()) {
+        	$last_matric = $row['matric_no']; // e.g. A00005
+        	$num = intval(substr($last_matric, 1)) + 1;
+        	$new_matric = "A" . str_pad($num, 5, "0", STR_PAD_LEFT);
+    	} else {
+        	$new_matric = "A00001"; // first student
+    	}
 
-	if($stmt->execute()) {
-		$message = "Student added successfully!";
-	} else {
-		$message = "Error: Could not add student.";
-	}
-	$stmt->close();
+    	// Insert new student with auto matric
+    	$stmt = $conn->prepare("INSERT INTO students (matric_no, student_name, programme) VALUES (?, ?, ?)");
+    	$stmt->bind_param("sss", $new_matric, $student_name, $programme);
+
+    	if($stmt->execute()) {
+        	$message = "Student added successfully! Matric No: ".$new_matric;
+    	} else {
+        	$message = "Error: Could not add student.";
+    	}
+   	$stmt->close();
 }
+
 
 // Handle Update Student
 if(isset($_POST['update'])) {
@@ -89,12 +100,12 @@ $result = $conn->query("SELECT * FROM students ORDER BY student_id ASC");
 	
 	<!-- Add Student Form -->
 	<h3>Add New Student</h3>
-	<form method = "POST">
-		Matric No: <input type="text" name="matric_no" required><br><br>
-		Name: <input type="text" name="student_name" required><br><br>
-		Programme: <input type="text" name="programme" required><br><br>
-		<button type="submit" name="add">Add Student</button>
+	<form method="POST">
+    		Name: <input type="text" name="student_name" required><br><br>
+    		Programme: <input type="text" name="programme" required><br><br>
+    		<button type="submit" name="add">Add Student</button>
 	</form>
+
 	<hr>
 	
 	<!-- Student List -->
