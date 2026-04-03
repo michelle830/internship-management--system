@@ -1,0 +1,127 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #acb6e5);
+    min-height: 100vh;
+}
+
+/* Center container */
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+/* Card style */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* Titles */
+h1, h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Navbar */
+.navbar {
+    background: #2c3e50;
+    padding: 15px 30px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.navbar a {
+    color: #ecf0f1;
+    margin-right: 15px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.navbar a:hover {
+    color: #74ebd5;
+}
+
+/* Forms */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input, select, textarea {
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* Buttons */
+button {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+buton:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table th {
+    background: #667eea;
+    color: white;
+    padding: 12px;
+}
+
+table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+table tr:hover {
+    background: #f5f5f5;
+}
+
+/* Login box (special) */
+.login-box {
+    max-width: 400px;
+    margin: 100px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25pxs rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.login-box h2 {
+    margin-bottom: 20px;
+}
