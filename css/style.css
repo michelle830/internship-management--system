@@ -82,7 +82,7 @@ button {
     transition: 0.3s;
 }
 
-buton:hover {
+button:hover {
     transform: scale(1.05);
     opacity: 0.9;
 }
@@ -118,10 +118,19 @@ table tr:hover {
     background: white;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 10px 25pxs rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     text-align: center;
 }
 
 .login-box h2 {
     margin-bottom: 20px;
+}
+
+.login-box input {
+    width:100%;
+}
+
+.error {
+    color: red;
+    margin-bottom: 10px;
 }

@@ -64,8 +64,11 @@ if (isset($_POST['login'])) {
 <html>
 <head>
     	<title>Login - Internship System</title>
+		<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+<div class="container">
     	<h2>Login</h2>
     	<?php if($error != "") echo "<p style='color:red'>$error</p>";?>
     	<form method="POST">
@@ -73,5 +76,6 @@ if (isset($_POST['login'])) {
         	Password: <input type="password" name="password" required><br><br>
         	<button type="submit" name="login">Login</button>
     	</form>
+</div>
 </body>
 </html>
