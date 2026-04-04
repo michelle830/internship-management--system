@@ -53,6 +53,8 @@ $user = $result->fetch_assoc();
 <html>
 <head>
     	<title>Admin Dashboard</title>
+		<link rel="stylesheet" href="css/style.css">
+
     	<script>
         	// Auto-update current time every second
         	function updateTime() {
@@ -70,30 +72,57 @@ $user = $result->fetch_assoc();
     	</script>
 </head>
 <body>
-    	<h1>Admin Dashboard</h1>
-    
-    	<!-- Welcome Message -->
-    	<p>Welcome, <?php echo $_SESSION['full_name']; ?>!</p>
+<div class="container">
 
-    	<!-- Role Display -->
-    	<p><strong>Role: </strong> <?php echo strtoupper($_SESSION['role']); ?></p>
+    <!-- Navbar -->
+	<div class="navbar">
+		<a href="#">Dashboard</a>
+		<a href="manage_students.php">Students</a>
+		<a href="manage_internships.php">Internships</a>
+		<a href="manage_assessments.php">Assessments</a>
+		<a href="register_user.php">Register User</a>
+		<a href="logout.php">Logout</a>
+    </div>
 
-    	<!-- Last Login Display -->
-    	<p><strong>Last Login: </strong>
-        	<?php echo $user['last_login'] ? $user['last_login'] : "First Login"; ?>
-    	</p>
+	<!-- Welcome Card -->
+	<div class="card">
+		<h2>Welcome, <?php echo $_SESSION['full_name']; ?> 👋🏻</h2>
+		<p><strong>Role:</strong> <?php echo strtoupper($_SESSION['role']); ?></p>
+		<p><strong>Last login:</strong>
+		    <?php echo $user['last_login'] ? $user['last_login'] : "First Login"; ?>
+        </p>
+		<p><strong>Current Time:</strong> <span id="currentTime"></span></p>
+    </div>
 
-    	<!-- Current Date & Time -->
-    	<p><strong>Current Date & Time: </strong> <span id="currentTime"></span></p>
-    	<hr>
-    
-    	<!-- Navigation Menu -->
-    	<h3>Navigation</h3>
-    	<ul>
-        	<li><a href="manage_students.php">Manage Students</a></li>
-        	<li><a href="manage_internships.php">Manage Internships</a></li>
-        	<li><a href="register_user.php">Register New User (Admin Only)</a></li>
-        	<li><a href="logout.php">Logout</a></li>
-    	</ul>
+	<!-- Stats -->
+	 <div class="stats">
+		<div class="card stat-box">
+			<h3>Total Students</h3>
+			<p>120</p>
+        </div>
+
+		<div class="card stat-box">
+			<h3>Internships</h3>
+			<p>45</p>
+        </div>
+
+		<div class="card stat-box">
+			<h3>Assessments</h3>
+			<p>30</p>
+        </div>
+    </div>
+
+	<!-- Quick Actions -->
+	 <div class="card">
+		<h2>Quick Actions</h2>
+		<button onclick="location.href='manage_students.php'">Manage Students</button>
+		<button onclick="location.href='manage_internships.php'">Manage Internships</button>
+		<button onclick="location.href='register_user.php'">Register User</button>
+    </div>
+
+</div>
+
 </body>
 </html>
+
+
