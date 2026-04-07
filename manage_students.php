@@ -223,89 +223,129 @@ $result = $conn->query("SELECT * FROM students ORDER BY student_id ASC");
 <html>
 <head>
     	<title>Manage Students</title>
+		<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="container">
+
+	<div class="navbar">
+		<a href="admin_dashboard.php">Dashboard</a>
+		<a href="manage_students.php">Students</a>
+		<a href="manage_internships.php">Internships</a>
+		<a href="register_user.php">Register User</a>
+		<a href="logout.php">Logout</a>
+    </div>
+
+	<div class="card">
     	<h1>Manage Students</h1>
-    	<a href="admin_dashboard.php">Back to Dashboard</a>
-    	<hr>
+    	<p>Add, update, delete, upload, and export student records.</p>
+    </div>
 
     	<!-- Show feedback message only if not in confirmation mode -->
     	<?php if($message != "" && !isset($_GET['confirm']) && !isset($_GET['confirm_bulk'])): ?>
-        	<p><?php echo htmlspecialchars($message); ?></p>
+			<div class="card">
+				<div class="info-box"><<?php echo htmlspecialchars($message); ?></div>
+		    </div>
     	<?php endif; ?>
 
     	<!-- Confirmation for manual add -->
     	<?php if(isset($_GET['confirm']) && isset($_SESSION['pending_student'])): ?>
-        	<p><?php echo htmlspecialchars($message); ?></p>
-        	<form method="POST">
+			<div class="card">
+				<h3>Duplicate Student Found</h3>
+        	    <p><?php echo htmlspecialchars($message); ?></p>
+        	    <form method="POST">
             		<input type="hidden" name="student_name" value="<?php echo htmlspecialchars($_SESSION['pending_student']['name']); ?>">
             		<input type="hidden" name="programme" value="<?php echo htmlspecialchars($_SESSION['pending_student']['programme']); ?>">
             		<button type="submit" name="confirm_add">Yes, Add Anyway</button>
-            		<a href="manage_students.php">Cancel</a>
-        	</form>
-        	<hr>
+            		<a href="manage_students.php" class="btn btn-secondary">Cancel</a>
+        	    </form>
+		    </div>
     	<?php endif; ?>
 
     	<!-- Confirmation for bulk upload -->
     	<?php if(isset($_GET['confirm_bulk']) && isset($_SESSION['pending_bulk'])): ?>
-        	<p><?php echo htmlspecialchars($message); ?></p>
-        	<form method="POST">
+			<div class="card">
+				<h3>Duplicate Students Found in CSV</h3>
+        	    <p><?php echo htmlspecialchars($message); ?></p>
+        	    <form method="POST">
             		<button type="submit" name="confirm_bulk_add">Yes, Add Duplicates</button>
-            		<a href="manage_students.php">Cancel</a>
-        	</form>
-        	<ul>
+            		<a href="manage_students.php" class="btn btn-secondary">Cancel</a>
+        	    </form>
+        	    <ul style="margin-top: 15px;">
             		<?php foreach($_SESSION['pending_bulk'] as $dup): ?>
-                		<li><?php echo htmlspecialchars($dup['name'])." (".$dup['programme'].")"; ?></li>
+                		<li><?php echo htmlspecialchars($dup['name'])." (".htmlspecialchars($dup['programme']).")"; ?></li>
             		<?php endforeach; ?>
-        	</ul>
-        	<hr>
+        	    </ul>
+			</div>
     	<?php endif; ?>
 
     	<!-- Add Student Form -->
-    	<h3>Add New Student</h3>
-    	<form method="POST">
-        	Name: <input type="text" name="student_name" required><br><br>
-        	Programme: <input type="text" name="programme" required><br><br>
-        	<button type="submit" name="add">Add Student</button>
-    	</form>
-    	<hr>
+		<div class="card">
+            <h3>Add New Student</h3>
+    	    <form method="POST">
+        	    <label>Name</label>
+				<input type="text" name="student_name" required>
+
+        	    <label>Programme</label>
+				<input type="text" name="programme" required>
+
+        	    <button type="submit" name="add">Add Student</button>
+    	    </form>
+		</div>
 
     	<!-- Bulk Upload Form -->
-    	<h3>Bulk Upload Students (CSV)</h3>
-    	<form method="POST" enctype="multipart/form-data">
-        	<input type="file" name="student_file" accept=".csv" required>
-        	<button type="submit" name="bulk_upload">Upload</button>
-    	</form>
-    	<hr>
+		<div class="card">
+    	    <h3>Bulk Upload Students (CSV)</h3>
+    	    <form method="POST" enctype="multipart/form-data">
+				<label> Select CSV file</label>
+        	    <input type="file" name="student_file" accept=".csv" required>
+        	    <button type="submit" name="bulk_upload">Upload</button>
+    	    </form>
+		</div>
 
     	<!-- Student List -->
-    	<h3>Student Records</h3>
-    	<table border="1" cellpadding="5">
-        	<tr>
-            		<th>ID</th><th>Matric No</th><th>Name</th><th>Programme</th><th>Actions</th>
-        	</tr>
-        	<?php while($row = $result->fetch_assoc()) { ?>
-        	<tr>
-            		<td><?php echo htmlspecialchars($row['student_id']); ?></td>
-            		<td><?php echo htmlspecialchars($row['matric_no']); ?></td>
-            		<td><?php echo htmlspecialchars($row['student_name']); ?></td>
-            		<td><?php echo htmlspecialchars($row['programme']); ?></td>
-            		<td>
+		<div class="card">
+    	    <h3>Student Records</h3>
+			<div class="table-wrapper">
+				<table>
+					<tr>
+						<th>ID</th>
+            		    <th>Matric No</th>
+						<th>Name</th>
+						<th>Programme</th>
+						<th>Actions</th>
+        	        </tr>
+        	        <?php while($row = $result->fetch_assoc()) { ?>
+        	        <tr>
+            		    <td><?php echo htmlspecialchars($row['student_id']); ?></td>
+            		    <td><?php echo htmlspecialchars($row['matric_no']); ?></td>
+            		    <td><?php echo htmlspecialchars($row['student_name']); ?></td>
+            		    <td><?php echo htmlspecialchars($row['programme']); ?></td>
+            		    <td>
                 		<!-- Edit Form -->
-                		<form method="POST" style="display:inline;">
+                		    <form method="POST">
                     			<input type="hidden" name="student_id" value="<?php echo $row['student_id']; ?>">
-                    			Name: <input type="text" name="student_name" value="<?php echo htmlspecialchars($row['student_name']); ?>">
-                    			Programme: <input type="text" name="programme" value="<?php echo htmlspecialchars($row['programme']); ?>">
+								
+								<label>Name</label>
+                    			<input type="text" name="student_name" value="<?php echo htmlspecialchars($row['student_name']); ?>" required>
+								
+								<label>Programme</label>
+                    			<input type="text" name="programme" value="<?php echo htmlspecialchars($row['programme']); ?>" required>
+
                     			<button type="submit" name="update">Update</button>
+								<!-- Delete Link -->
+								<a href="manage_students.php?delete=<?php echo $row['student_id']; ?>" class="btn btn-danger" onclick="return confirm('Delete this student?');">Delete</a>
                 		</form>
-                		<!-- Delete Link -->
-                		<a href="manage_students.php?delete=<?php echo $row['student_id']; ?>" onclick="return confirm('Delete this student?');">Delete</a>
             		</td>
-        	</tr>
-        	<?php } ?>
-    	</table>
-	<form method="GET" action="manage_students.php">
+        	    </tr>
+        	    <?php } ?>
+    	    </table>
+		</div>
+
+	    <form method="GET" action="manage_students.php" style="margin-top: 20px;">
     		<button type="submit" name="export_csv">Export Records to CSV</button>
-	</form>
+	    </form>
+	</div>
+
+</div>
 </body>
-</html>

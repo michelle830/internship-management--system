@@ -7,7 +7,7 @@ Purpose: Connects PHP to MySQL database
 $host = "localhost";
 $user ="root";
 $password = "root";
-$database = "COMP1044_Database";
+$database = "comp_1044 database";
 
 // Create connection
 $conn = new mysqli($host, $user, $password, $database);

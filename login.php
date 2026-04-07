@@ -68,9 +68,9 @@ if (isset($_POST['login'])) {
 </head>
 <body>
 
-<div class="container">
+<div class="login-box">
     	<h2>Login</h2>
-    	<?php if($error != "") echo "<p style='color:red'>$error</p>";?>
+    	<?php if($error != "") echo "<p style='error'>$error</p>";?>
     	<form method="POST">
         	Username: <input type="text" name="username" required><br><br>
         	Password: <input type="password" name="password" required><br><br>

@@ -296,131 +296,188 @@ $assessors = $conn->query("SELECT user_id, full_name
 <html>
 <head>
     	<title>Manage Internships</title>
+		<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    	<h1>Manage Internships</h1>
-    	<a href="admin_dashboard.php">Back to Dashboard</a>
-    	<hr>
+<div class="container">
 
-    	<!-- Show flash message once -->
-    	<?php if(isset($_SESSION['flash_message'])): ?>
-        	<p><?php echo htmlspecialchars($_SESSION['flash_message']); ?></p>
+	<div class="navbar">
+		<a href="admin_dashboard.php">Dashboard</a>
+		<a href="manage_students.php">Students</a>
+		<a href="manage_internship.php">Internships</a>
+		<a href="register_user.php">Register User</a>
+		<a href="logout.php">Logout</a>
+    </div>
+
+	<div class="card">
+    	<h1>Manage Internships</h1>
+    	<p>Add, update, delete, upload, and export internship records.</p>
+    </div>
+
+    <!-- Show flash message once -->
+	<?php if(isset($_SESSION['flash_message'])): ?>
+		<div class="card">
+			<div class="info-box">
+				<?php echo htmlspecialchars($_SESSION['flash_message']); ?>
+	        </div>
         	<?php unset($_SESSION['flash_message']); ?>
-    	<?php endif; ?>
+	    </div>
+    <?php endif; ?>
 
    	<!-- Confirmation for bulk upload -->
-    	<?php if(isset($_GET['confirm_bulk']) && isset($_SESSION['pending_bulk_internships'])): ?>
-        	<form method="POST">
-            		<button type="submit" name="confirm_bulk_add">Yes, Add Duplicates</button>
-            		<a href="manage_internships.php">Cancel</a>
-        	</form>
-        	<ul>
-            		<?php foreach($_SESSION['pending_bulk_internships'] as $dup): ?>
-                		<li>
-                    			Student: <?php echo htmlspecialchars($dup['student_name']); ?>,
-                    			Assessor: <?php echo htmlspecialchars($dup['assessor_name']); ?>,
-                    			Company: <?php echo htmlspecialchars($dup['company_name']); ?>,
-                    			Supervisor: <?php echo htmlspecialchars($dup['supervisor_name']); ?>,
-                    			Duration: <?php echo htmlspecialchars($dup['duration']); ?> months,
-                    			Start Date: <?php echo htmlspecialchars($dup['start_date']); ?>,
-                    			End Date: <?php echo htmlspecialchars($dup['end_date']); ?>
-               	 		</li>
-            		<?php endforeach; ?>
-        	</ul>
-        	<hr>
-    	<?php endif; ?>
+    <?php if(isset($_GET['confirm_bulk']) && isset($_SESSION['pending_bulk_internships'])): ?>
+		<div class="card">
+			<h3>Duplicate Internships Found</h3>
+			<p> The following records already exist. Do you want to add them anyway?</p>
 
+        	<form method="POST">
+            	<button type="submit" name="confirm_bulk_add">Yes, Add Duplicates</button>
+            	<a href="manage_internships.php" class="btn btn-secondary">Cancel</a>
+        	</form>
+
+        	<ul style="margin-top: 15px;">
+            	<?php foreach($_SESSION['pending_bulk_internships'] as $dup): ?>
+                	<li>
+                    	Student: <?php echo htmlspecialchars($dup['student_name']); ?>,
+                    	Assessor: <?php echo htmlspecialchars($dup['assessor_name']); ?>,
+                    	Company: <?php echo htmlspecialchars($dup['company_name']); ?>,
+                		Supervisor: <?php echo htmlspecialchars($dup['supervisor_name']); ?>,
+            			Duration: <?php echo htmlspecialchars($dup['duration']); ?> months,
+            			Start Date: <?php echo htmlspecialchars($dup['start_date']); ?>                    			End Date: <?php echo htmlspecialchars($dup['end_date']); ?>
+               	 	</li>
+            	<?php endforeach; ?>
+        	</ul>
+		</div>
+        
+    <?php endif; ?>
+
+	<div class="card">
     	<!-- Add Internship Form -->
     	<h3>Add New Internship</h3>
     	<form method="POST">
-        	Student:
+        	<label>Student</label>:
         	<select name="student_id" required>
-            		<option value="">-- Select Student --</option>
-            		<?php while($s = $students->fetch_assoc()) { ?>
-                		<option value="<?php echo $s['student_id']; ?>">
-                    			<?php echo htmlspecialchars($s['student_name'])." (".$s['matric_no'].")"; ?>
-                		</option>
-            		<?php } ?>
+            	<option value="">-- Select Student --</option>
+            	<?php while($s = $students->fetch_assoc()) { ?>
+            		<option value="<?php echo $s['student_id']; ?>">
+                			<?php echo htmlspecialchars($s['student_name'])." (".$s['matric_no'].")"; ?>
+                	</option>
+            	<?php } ?>
         	</select><br><br>
 
-        	Assessor:
+        	<label>Assessor</label>:
         	<select name="assessor_id" required>
-            		<option value="">-- Select Assessor --</option>
-            		<?php while($a = $assessors->fetch_assoc()) { ?>
-                		<option value="<?php echo $a['user_id']; ?>">
-                    			<?php echo htmlspecialchars($a['full_name']); ?>
-                		</option>
-            		<?php } ?>
-        	</select><br><br>
+            	<option value="">-- Select Assessor --</option>
+            	<?php while($a = $assessors->fetch_assoc()) { ?>
+                	<option value="<?php echo $a['user_id']; ?>">
+                			<?php echo htmlspecialchars($a['full_name']); ?>
+                	</option>
+            	<?php } ?>
+        	</select>
 
-        	Company: <input type="text" name="company_name" required><br><br>
-        	Supervisor: <input type="text" name="supervisor_name"><br><br>
-        	Duration:
+        	<label>Company Name</label>
+			<input type="text" name="company_name" required>
+
+        	<label>Supervisor Name</label>
+			<input type="text" name="supervisor_name">
+
+        	<label>Duration</label>
         	<select name="duration" required>
            		<option value="">-- Select Duration --</option>
-            		<option value="3">3 Months</option>
-            		<option value="6">6 Months</option>
-            		<option value="9">9 Months</option>
-            		<option value="12">12 Months</option>
-        	</select><br><br>
-        	Start Date: <input type="date" name="start_date" required><br><br>
-        	End Date: <input type="date" name="end_date" required><br><br>
+            	<option value="3">3 Months</option>
+            	<option value="6">6 Months</option>
+        		<option value="9">9 Months</option>
+        		<option value="12">12 Months</option>
+        	</select>
+
+        	<label>Start Date</label>
+			<input type="date" name="start_date" required>
+
+        	<label>End Date</label>
+			<input type="date" name="end_date" required>
+
         	<button type="submit" name="add">Add Internship</button>
     	</form>
-    	<hr>
+	</div>
 
-    	<!-- Bulk Upload Form -->
+    <!-- Bulk Upload Form -->
+	<div class="card">
     	<h3>Bulk Upload Internships (CSV)</h3>
     	<form method="POST" enctype="multipart/form-data">
+			<label>Select CSV File</label>
         	<input type="file" name="internship_file" accept=".csv" required>
         	<button type="submit" name="bulk_upload">Upload</button>
     	</form>
-    	<hr>
+	</div>
 
-    	<!-- Internship Records -->
+	<!-- Internship Records -->
+	<div class="card">
     	<h3>Internship Records</h3>
-    	<table border="1" cellpadding="5">
-        	<tr>
-            		<th>ID</th><th>Student</th><th>Assessor</th><th>Company</th>
-            		<th>Supervisor</th><th>Duration</th><th>Start Date</th><th>End Date</th><th>Actions</th>
+		<div class="table-wrapper">
+			<table>
+				<tr>
+            		<th>ID</th>
+					<th>Student</th>
+					<th>Assessor</th>
+					<th>Company</th>
+            		<th>Supervisor</th>
+					<th>Duration</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+					<th>Actions</th>
         	</tr>
         	<?php while($row = $result->fetch_assoc()) { ?>
         	<tr>
-            		<td><?php echo htmlspecialchars($row['internship_id']); ?></td>
-            		<td><?php echo htmlspecialchars($row['student_name'])." (".$row['matric_no'].")"; ?></td>
-            		<td><?php echo htmlspecialchars($row['assessor_name']); ?></td>
-            		<td><?php echo htmlspecialchars($row['company_name']); ?></td>
-            		<td><?php echo htmlspecialchars($row['supervisor_name']); ?></td>
-            		<td><?php echo htmlspecialchars($row['duration']); ?></td>
-            		<td><?php echo htmlspecialchars($row['start_date']); ?></td>
-            		<td><?php echo htmlspecialchars($row['end_date']); ?></td>
-            		<td>
-                		<!-- Edit Form -->
-                		<form method="POST" style="display:inline;">
-                    			<input type="hidden" name="internship_id" value="<?php echo $row['internship_id']; ?>">
-                    Company: <input type="text" name="company_name" value="<?php echo htmlspecialchars($row['company_name']); ?>">
-                    Supervisor: <input type="text" name="supervisor_name" value="<?php echo htmlspecialchars($row['supervisor_name']); ?>">
-                    Duration:
-                    			<select name="duration" required>
-                        			<option value="3" <?php if($row['duration']=="3") echo "selected"; ?>>3 Months</option>
-                        			<option value="6" <?php if($row['duration']=="6") echo "selected"; ?>>6 Months</option>
-                        			<option value="9" <?php if($row['duration']=="9") echo "selected"; ?>>9 Months</option>
-                        			<option value="12" <?php if($row['duration']=="12") echo "selected"; ?>>12 Months</option>
-                    			</select><br><br>
-                    			Start Date: <input type="date" name="start_date" value="<?php echo htmlspecialchars($row['start_date']); ?>">
-                    			End Date: <input type="date" name="end_date" value="<?php echo htmlspecialchars($row['end_date']); ?>">
-                    			<button type="submit" name="update">Update</button>
-                		</form>
+            	<td><?php echo htmlspecialchars($row['internship_id']); ?></td>
+            	<td><?php echo htmlspecialchars($row['student_name'])." (".$row['matric_no'].")"; ?></td>
+        		<td><?php echo htmlspecialchars($row['assessor_name']); ?></td>
+        		<td><?php echo htmlspecialchars($row['company_name']); ?></td>
+        		<td><?php echo htmlspecialchars($row['supervisor_name']); ?></td>
+            	<td><?php echo htmlspecialchars($row['duration']); ?></td>
+            	<td><?php echo htmlspecialchars($row['start_date']); ?></td>
+        		<td><?php echo htmlspecialchars($row['end_date']); ?></td>
+        		<td>
+                	<!-- Edit Form -->
+                	<form method="POST">
+                    	<input type="hidden" name="internship_id" value="<?php echo $row['internship_id']; ?>">
+                    
+					    <label>Company</label> 
+						<input type="text" name="company_name" value="<?php echo htmlspecialchars($row['company_name']); ?>" required>
+                    
+						<label>Supervisor</label>
+						<input type="text" name="supervisor_name" value="<?php echo htmlspecialchars($row['supervisor_name']); ?>">
+                    
+						<label>Duration</label>
+                    	<select name="duration" required>
+                        	<option value="3" <?php if($row['duration']=="3") echo "selected"; ?>>3 Months</option>
+                        	<option value="6" <?php if($row['duration']=="6") echo "selected"; ?>>6 Months</option>
+                    		<option value="9" <?php if($row['duration']=="9") echo "selected"; ?>>9 Months</option>
+                			<option value="12" <?php if($row['duration']=="12") echo "selected"; ?>>12 Months</option>
+                    	</select>
+                    			
+						
+						<label>Start Date</label>
+						<input type="date" name="start_date" value="<?php echo htmlspecialchars($row['start_date']); ?>" required>
+                    			
+						<label>End Date</label>
+						<input type="date" name="end_date" value="<?php echo htmlspecialchars($row['end_date']); ?>" required>
+                    			
+						<button type="submit" name="update">Update</button>
                 		<!-- Delete Link -->
-                		<a href="manage_internships.php?delete=<?php echo $row['internship_id']; ?>" onclick="return confirm('Delete this internship?');">Delete</a>
-            		</td>
+                		<a href="manage_internships.php?delete=<?php echo $row['internship_id']; ?>" class="btn btn-danger" onclick="return confirm('Delete this internship?');">Delete</a>
+				    </form>
+            	</td>
         	</tr>
         	<?php } ?>
     	</table>
+	</div>
+
 	<!-- Export Records -->
-	<form method="GET" action="manage_internships.php">
-    		<button type="submit" name="export_csv">Export Records to CSV</button>
+	<form method="GET" action="manage_internships.php" style="margin-top: 20px;">
+    	<button type="submit" name="export_csv">Export Records to CSV</button>
 	</form>
-	<hr>
+</div>
+
+</div>
 </body>
 </html>

@@ -27,7 +27,13 @@ body {
     padding: 25px;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    margin-top: 10px;
     margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
 }
 
 /* Titles */
@@ -38,6 +44,10 @@ h1, h2 {
 
 /* Navbar */
 .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
     background: #2c3e50;
     padding: 15px 30px;
     border-radius: 10px;
@@ -49,10 +59,12 @@ h1, h2 {
     margin-right: 15px;
     text-decoration: none;
     font-weight: 500;
+    transition: 0.3s;
 }
 
 .navbar a:hover {
     color: #74ebd5;
+    text-decoration: underline;
 }
 
 /* Forms */
@@ -71,6 +83,7 @@ input, select, textarea {
 
 /* Buttons */
 button {
+    width: 100%;
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     padding: 12px;
@@ -111,7 +124,7 @@ table tr:hover {
     background: #f5f5f5;
 }
 
-/* Login box (special) */
+/* Login box */
 .login-box {
     max-width: 400px;
     margin: 100px auto;
@@ -135,19 +148,28 @@ table tr:hover {
     margin-bottom: 10px;
 }
 
+/* Stats */
 .stats {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
-    flex-wrap: wrap;
 }
-
 .stat-box {
-    flex: 1;
-    min-width: 200px;
     text-align: center;
-    transition: 0.3s;
 }
 
-.stat-box:hover {
-    transform: translateY(-5px);
+td form {
+    min-width: 220px;
+}
+
+td .btn,
+td button {
+    margin-top: 8px;
+    margin-right: 6px;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
