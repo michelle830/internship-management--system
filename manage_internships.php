@@ -304,7 +304,7 @@ $assessors = $conn->query("SELECT user_id, full_name
 	<div class="navbar">
 		<a href="admin_dashboard.php">Dashboard</a>
 		<a href="manage_students.php">Students</a>
-		<a href="manage_internship.php">Internships</a>
+		<a href="manage_internships.php">Internships</a>
 		<a href="register_user.php">Register User</a>
 		<a href="logout.php">Logout</a>
     </div>
@@ -355,7 +355,7 @@ $assessors = $conn->query("SELECT user_id, full_name
     	<!-- Add Internship Form -->
     	<h3>Add New Internship</h3>
     	<form method="POST">
-        	<label>Student</label>:
+        	<label>Student</label>
         	<select name="student_id" required>
             	<option value="">-- Select Student --</option>
             	<?php while($s = $students->fetch_assoc()) { ?>
@@ -363,9 +363,9 @@ $assessors = $conn->query("SELECT user_id, full_name
                 			<?php echo htmlspecialchars($s['student_name'])." (".$s['matric_no'].")"; ?>
                 	</option>
             	<?php } ?>
-        	</select><br><br>
+        	</select>
 
-        	<label>Assessor</label>:
+        	<label>Assessor</label>
         	<select name="assessor_id" required>
             	<option value="">-- Select Assessor --</option>
             	<?php while($a = $assessors->fetch_assoc()) { ?>
