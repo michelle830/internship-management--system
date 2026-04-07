@@ -52,7 +52,15 @@ if(isset($_POST['submit_assessment'])) {
     	} else {
         	// Calculate total score as percentage
         	$sum_scores = array_sum($criteria); // sum of all 8 criteria
-       		$total_score = ($sum_scores / 800) * 100; // normalized percentage
+       		$total_score = 
+			    ($task_project * 0.10) +
+				($health_safety * 0.10) +
+				($theory_application * 0.10) +
+				($report_presentation * 0.15) +
+				($language_clarity * 0.10) +
+				($lifelong_learning * 0.15) +
+				($project_management * 0.15) +
+				($time_management * 0.15);
 
         	$stmt = $conn->prepare("SELECT internship_id FROM internships WHERE student_id = ? AND assessor_id = ? LIMIT 1");
         	$stmt->bind_param("ii", $student_id, $assessor_id);

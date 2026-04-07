@@ -61,7 +61,15 @@ if(isset($_POST['save_record'])) {
 
     	// Calculate total score = (sum of all criteria / 800) * 100
     	$sum_scores = array_sum($criteria);
-    	$total_score = ($sum_scores / 800) * 100;
+    	$total_score =
+		    ($task_project * 0.10) +
+			($health_safety * 0.10) +
+			($theory_application * 0.10) + 
+			($report_presentation * 0.15) + 
+			($language_clarity * 0.10) +
+			($lifelong_learning * 0.15) +
+			($project_management * 0.15) +
+			($time_management * 0.15);
 
     	// Find internship_id
     	$stmt = $conn->prepare("SELECT internship_id FROM internships WHERE student_id=? AND assessor_id=? LIMIT 1");
