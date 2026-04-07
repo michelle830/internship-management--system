@@ -58,25 +58,52 @@ if(isset($_POST['register'])) {
 <html>
 <head>
     	<title>Register New User</title>
+		<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    	<h1>Register New User</h1>
-    	<a href="admin_dashboard.php">Back to Dashboard</a>
-    	<hr>
+	<div class="container">
+		<a href="admin_dashboard.php">Dashboard</a>
+		<a href="manage_students.php">Students</a>
+		<a href="manage_internships.php">Internships</a>
+		<a href="manage_assessments.php">Assessments</a>
+		<a href="register_user.php">Register User</a>
+		<a href="logout.php">Logout</a>
+    </div>
 
-    	<!-- Show feedback message -->
-    	<?php if($message != "") echo "<p style='color:red'>$message</p>";?>
+	<div class="card">
+    	<h1>Register New User</h1>
+    	<p>Create a new admin or assessor account here.</p>
+    </div>
+
+    <!-- Show feedback message -->
+	<div class="card">
+    	<?php 
+		if($message != "") {
+			$class = (strpos($message, 'successfully') !== false) ? 'success' : 'error';
+			echo "<div class='$class'>$message</div>";
+		}
+		?>
 
     	<!-- Registration Form -->
     	<form method="POST">
-        	Username: <input type="text" name="username" required><br><br>
-        	Full Name: <input type="text" name="full_name" required><br><br>
-        	Role:
+        	<label>Username</label>
+			<input type="text" name="username" required>
+
+
+        	<label>Full Name</label>
+			<input type="text" name="full_name" required>
+
+        	<label>Role</label>
         	<select name="role" required>
-            		<option value="admin">Admin</option>
-            		<option value="assessor">Assessor</option>
-        	</select><br><br>
+				<option value="">-- Select Role -- </option>
+            	<option value="admin">Admin</option>
+            	<option value="assessor">Assessor</option>
+        	</select>
+
         	<button type="submit" name="register">Register User</button>
     	</form>
+    </div>
+
+</div>
 </body>
-</html>
+
