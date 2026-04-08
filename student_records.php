@@ -186,8 +186,11 @@ if (isset($_POST['download_pdf']) && $student_info) {
 		<a href="logout.php">Logout</a>
     </div>
 
-	<div class="card">
-		<h1>Student Report Card</h1>
+	<div class="hero-card">
+		<div class="icon-title">
+			<span>📊</span>
+		    <h1>Student Report Card</h1>
+        </div>
 		<p>View and manage assessment report cards for assigned students.</p>
     </div>
 
