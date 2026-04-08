@@ -236,9 +236,12 @@ $result = $conn->query("SELECT * FROM students ORDER BY student_id ASC");
 		<a href="logout.php">Logout</a>
     </div>
 
-	<div class="card">
-    	<h1>Manage Students</h1>
-    	<p>Add, update, delete, upload, and export student records.</p>
+	<div class="hero-card">
+		<div class="icon-title">
+			<span>🎓</span>
+			<h1>Manage Students</h1>
+        </div>
+		<p>Add, update, delete, upload, and export student records.</p>
     </div>
 
     	<!-- Show feedback message only if not in confirmation mode -->
