@@ -309,10 +309,13 @@ $assessors = $conn->query("SELECT user_id, full_name
 		<a href="logout.php">Logout</a>
     </div>
 
-	<div class="card">
-    	<h1>Manage Internships</h1>
-    	<p>Add, update, delete, upload, and export internship records.</p>
-    </div>
+	<div class="hero-card">
+		<div class="icon-title">
+			<span>🏢</span>
+			<h1>Manage Internships</h1>
+        </div>
+		<p>Add, update, delete, upload, and export internship records.</p>
+    </div> 
 
     <!-- Show flash message once -->
 	<?php if(isset($_SESSION['flash_message'])): ?>
