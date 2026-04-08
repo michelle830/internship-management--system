@@ -76,17 +76,23 @@ $user = $result->fetch_assoc();
 
     <!-- Navbar -->
 	<div class="navbar">
-		<a href="#">Dashboard</a>
-		<a href="manage_students.php">Students</a>
-		<a href="manage_internships.php">Internships</a>
-		<a href="manage_assessments.php">Assessments</a>
-		<a href="register_user.php">Register User</a>
-		<a href="logout.php">Logout</a>
+		<a href="admin_dashboard.php">🏠 Dashboard</a>
+		<a href="manage_students.php">🎓 Students</a>
+		<a href="manage_internships.php">🏢 Internships</a>
+		<a href="manage_assessments.php">📝 Assessments</a>
+		<a href="register_user.php">👤 Register User</a>
+		<a href="logout.php">🚪 Logout</a>
     </div>
 
 	<!-- Welcome Card -->
-	<div class="card">
-		<h2>Welcome, <?php echo $_SESSION['full_name']; ?> 👋🏻</h2>
+	<div class="hero-card">
+		<div class="icon-title">
+			<span>💼</span>
+			<h1>Admin Dashboard</h1>
+        </div>
+
+		<p>Welcome, <strong><?php echo $_SESSION['full_name']; ?></strong> 👋🏻</p>
+		<p>You are logged in as an administrator. Manage your system efficiently here.</p>
 		<p><strong>Role:</strong> <?php echo strtoupper($_SESSION['role']); ?></p>
 		<p><strong>Last login:</strong>
 		    <?php echo $user['last_login'] ? $user['last_login'] : "First Login"; ?>
@@ -96,32 +102,59 @@ $user = $result->fetch_assoc();
 
 	<!-- Stats -->
 	 <div class="stats">
-		<div class="card stat-box">
-			<h3>Total Students</h3>
+		<div class="stat-box">
+			<h3>🎓 Total Students</h3>
 			<p>120</p>
         </div>
 
-		<div class="card stat-box">
-			<h3>Internships</h3>
+		<div class="stat-box">
+			<h3>🏢 Internships</h3>
 			<p>45</p>
         </div>
 
-		<div class="card stat-box">
-			<h3>Assessments</h3>
+		<div class="stat-box">
+			<h3>📝 Assessments</h3>
 			<p>30</p>
         </div>
     </div>
 
 	<!-- Quick Actions -->
-	 <div class="card">
+	<div class="card">
 		<h2>Quick Actions</h2>
-		<button onclick="location.href='manage_students.php'">Manage Students</button>
-		<button onclick="location.href='manage_internships.php'">Manage Internships</button>
-		<button onclick="location.href='register_user.php'">Register User</button>
+		<div class="action-row">
+			<a href="manage_students.php" class="btn">🎓 Manage Students</a>
+			<a href="manage_internships.php" class="btn">🏢 Manage Internships</a>
+			<a href="register_user.php" class="btn">👤 Register User</a>
+        </div>
+    </div>
+
+	<!-- System Features -->
+	<div class="card">
+        <h2>System Features</h2>
+        <div class="feature-grid">
+            <div class="feature-box">
+                <h3>🎓 Student Management</h3>
+                <p>Add, edit, delete, and manage student records efficiently.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>🏢 Internship Management</h3>
+                <p>Assign internships and track placements easily.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>📝 Assessment System</h3>
+                <p>Enter marks and evaluate student performance.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>📊 Reports</h3>
+                <p>Generate report cards and review results.</p>
+            </div>
+         </div>
     </div>
 
 </div>
-
 </body>
 </html>
 
