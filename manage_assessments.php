@@ -136,8 +136,11 @@ $stmt2->close();
 		<a href="logout.php">Logout</a>
     </div>
 
-	<div class="card">
-    	<h1>Manage Assessments</h1>
+	<div class="hero-card">
+		<div class="icon-title">
+			<span>📝</span>
+    	    <h1>Manage Assessments</h1>
+        </div>
     	<p> Submit and review internship assessments for your assigned students.</p>
     </div>   
 
