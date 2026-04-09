@@ -513,3 +513,73 @@ td button {
         flex-direction: column;
     }
 }
+
+/* Login Page Full Screen */
+.login-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Left Side */
+.login-card {
+    width: 40%;
+    background: white;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-card h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Inputs Bigger */
+.login-card input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+/* Button */
+.login-card button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Right Side */
+.login-visual {
+    width: 60%;
+    background: linear-gradient(135deg, #667eea, #00c6ff);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.login-visual h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.login-visual p {
+    font-size: 18px;
+    opacity: 0.9;
+}
