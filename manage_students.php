@@ -46,10 +46,11 @@ if(isset($_POST['add'])){
         	header("Location: manage_students.php?confirm=1");
         	exit();
     	}
+		$isDuplicate = ($check->num_rows > 0);
     	$check->close();
 
     	// If confirmed or no duplicate, proceed
-    	if(isset($_POST['confirm_add']) || $check->num_rows == 0) {
+    	if(isset($_POST['confirm_add']) || !$isDuplicate) {
         	$result = $conn->query("SELECT matric_no FROM students ORDER BY student_id DESC LIMIT 1");
         	if($row = $result->fetch_assoc()) {
             		$last_matric = $row['matric_no'];
