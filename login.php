@@ -67,15 +67,30 @@ if (isset($_POST['login'])) {
 		<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="login-container">
 
-<div class="login-box">
-    	<h2>Login</h2>
-    	<?php if($error != "") echo "<p style='error'>$error</p>";?>
-    	<form method="POST">
-        	Username: <input type="text" name="username" required><br><br>
-        	Password: <input type="password" name="password" required><br><br>
-        	<button type="submit" name="login">Login</button>
-    	</form>
+	<!-- Left sode (form) -->
+    <div class="login-box">
+		<h1>Welcome Back 👋🏻</h1>
+		<p class="subtitle">Internship Management System</p>
+
+		<form method="POST">
+			<label>Username</label>
+			<input type="text" name="username" required>
+
+			<label>Password</label>
+			<input type="password" name="password" required>
+
+			<button type="submit" name="login">Login</button>
+        </form>
+    </div>
+
+	<!-- Right side (visual) -->
+	<div class="login-visual">
+		<h2>Manage Internships Easily</h2>
+		<p>Track students, internships, and assessments all in one place.</p>
+		<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="150">
+    </div>
+
 </div>
 </body>
-</html>
