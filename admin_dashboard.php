@@ -76,16 +76,16 @@ $user = $result->fetch_assoc();
 
     <!-- Navbar -->
 	<div class="navbar">
-		<a href="admin_dashboard.php">🏠 Dashboard</a>
+		<a href="admin_dashboard.php" class="active">🏠 Dashboard</a>
 		<a href="manage_students.php">🎓 Students</a>
 		<a href="manage_internships.php">🏢 Internships</a>
-		<a href="manage_assessments.php">📝 Assessments</a>
 		<a href="register_user.php">👤 Register User</a>
 		<a href="logout.php">🚪 Logout</a>
     </div>
 
 	<!-- Welcome Card -->
 	<div class="hero-card">
+		<img src="https://cdn-icons-png.flaticon.com/512/3062/3062634.png" width="60" style="position:absolute; top:20px; right:20px;">
 		<div class="icon-title">
 			<span>💼</span>
 			<h1>Admin Dashboard</h1>
@@ -130,10 +130,10 @@ $user = $result->fetch_assoc();
 
 	<!-- System Features -->
 	<div class="card">
-        <h2>System Features</h2>
+        <h2>✨ System Features</h2>
         <div class="feature-grid">
             <div class="feature-box">
-                <h3>🎓 Student Management</h3>
+                <h3><img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" width="24"> Student Management</h3>
                 <p>Add, edit, delete, and manage student records efficiently.</p>
             </div>
 
