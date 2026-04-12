@@ -179,11 +179,11 @@ if (isset($_POST['download_pdf']) && $student_info) {
 <div class="container">
 
 	<div class="navbar">
-		<a href="assessor_dashhboard.php">Dashboard</a>
-		<a href="view_assigned_students.php">Assigned Students</a>
-		<a href="manage_assessments.php">Assessments</a>
-		<a href="student_records.php">Student Records</a>
-		<a href="logout.php">Logout</a>
+		<a href="assessor_dashhboard.php">🏠 Dashboard</a>
+		<a href="view_assigned_students.php">👥 Assigned Students</a>
+		<a href="manage_assessments.php">📝 Assessments</a>
+		<a href="student_records.php" class="active">📊 Student Records</a>
+		<a href="logout.php">🚪 Logout</a>
     </div>
 
 	<div class="hero-card">
