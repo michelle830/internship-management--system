@@ -48,21 +48,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html>
 <head>
     	<title>Change Password</title>
+		<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    	<h2>Change Your Password</h2>
-    	<p>You must change your default password before accessing the system.</p>
-    	<hr>
+<div class="container" style="max-width: 700px; margin-top: 60px;">
+	
+	
+    <div class="card">
+	    <h1> 🔐 Change Your Password</h1>
+        <p>You must change your default password before accessing the system.</p>
 
-    	<!-- Feedback messages -->
-    	<?php if($error != "") echo "<p style='color:red'>$error</p>"; ?>
-    	<?php if($success != "") echo "<p style='color:green'>$success</p>"; ?>
+
+        <!-- Feedback messages -->
+    	<?php if($error != ""): ?>
+			<div class="error"><?php echo htmlspecialchars($error); ?></div>
+		<?php endif; ?>
+
+    	<?php if($success != ""): ?>
+			<div class="success"><?php echo htmlspecialchars($sucess); ?></div>
+		<?php endif; ?>
 
     	<!-- Password change form -->
     	<form method="POST">
-        	New Password: <input type="password" name="new_password" required><br><br>
-        	Confirm New Password: <input type="password" name="confirm_password" required><br><br>
+        	<label>New Password</label>
+			<input type="password" name="new_password" required>
+
+        	<label>Confirm New Password</label>
+			<input type="password" name="confirm_password" required>
+
         	<button type="submit">Change Password</button>
     	</form>
+	</div>
+
+</div>
 </body>
 </html>
