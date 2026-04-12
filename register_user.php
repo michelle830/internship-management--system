@@ -64,12 +64,11 @@ if(isset($_POST['register'])) {
 <div class="container">
 
 	<div class="navbar">
-		<a href="admin_dashboard.php">Dashboard</a>
-		<a href="manage_students.php">Students</a>
-		<a href="manage_internships.php">Internships</a>
-		<a href="manage_assessments.php">Assessments</a>
-		<a href="register_user.php">Register User</a>
-		<a href="logout.php">Logout</a>
+		<a href="admin_dashboard.php">🏠 Dashboard</a>
+		<a href="manage_students.php">🎓 Students</a>
+		<a href="manage_internships.php">🏢 Internships</a>
+		<a href="register_user.php" class="active">👤 Register User</a>
+		<a href="logout.php">🚪 Logout</a>
     </div>
 
 	<div class="card">
