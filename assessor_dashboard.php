@@ -46,6 +46,8 @@ $stmt->close();
 <html>
 <head>
     	<title>Assessor Dashboard</title>
+		<link rel="stylesheet" href="css/style.css">
+
     	<script>
         	// Auto-update current time every second
         	function updateTime() {
@@ -92,29 +94,47 @@ $stmt->close();
     	</script>
 </head>
 <body>
-    	<h1>Assessor Dashboard</h1>
+<div class="container">
 
-    	<p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?>!</p>
+	<div class="navbar">
+		<a href="assessor_dashboard.php" class="active">🏠 Dashboard</a>
+		<a href="view_assigned_students.php">👥 Students</a>
+		<a href="manage_assessments.php">📝 Assessments</a>
+		<a href="student_records.php">📊 Records</a>
+		<a href="logout.php">🚪 Logout</a>
+    </div>
 
-    	<p><strong>Last Login: </strong>
+	<div class="hero-card">
+		<div class="icon-title">
+			<span>🧑‍🏫</span>
+    	    <h1>Assessor Dashboard</h1>
+        </div>
+
+    	<p>Welcome, <strong><?php echo htmlspecialchars($_SESSION['full_name']); ?></strong> 👋🏻</p>
+
+    	<p><strong>Last Login:</strong>
         	<?php echo $user['last_login'] ? htmlspecialchars($user['last_login']) : "First Login"; ?>
     	</p>
 
-    	<p><strong>Current Date & Time: </strong> <span id="currentTime"></span></p>
-    	<hr>
+    	<p><strong>Current Date & Time:</strong> <span id="currentTime"></span></p>
+    </div>
 
-    	<h3>Search Students</h3>
+	<div class="card">
+    	<h2>🔍 Search Students</h2>
     	<input type="text" id="searchBox" placeholder="Enter name or matric no" 
-           onkeyup="loadStudents(this.value)" size="30">
+               onkeyup="loadStudents(this.value)">
     	<div id="results"></div>
+    </div>
 
-    	<hr>
-    	<h3>Navigation</h3>
-   	<ul>
-        	<li><a href="view_assigned_students.php">View Assigned Students</a></li>
-        	<li><a href="manage_assessments.php">Manage Assessments</a></li>
-        	<li><a href="student_records.php">View Student Records</a></li>
-        	<li><a href="logout.php">Logout</a></li>
-    	</ul>
+    <div class="card">
+    	<h2>⚡️ Quick Actions</h2>
+		<div class="action-row">
+        	<a href="view_assigned_students.php" class="btn">👥 View Assigned Students</a>
+        	<a href="manage_assessments.php" class="btn">📝 Manage Assessments</a>
+        	<a href="student_records.php" class="btn">📊 Student Records</a>
+        </div>
+    </div>
+
+</div>
 </body>
-</html>
+
