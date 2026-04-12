@@ -302,11 +302,11 @@ $assessors = $conn->query("SELECT user_id, full_name
 <div class="container">
 
 	<div class="navbar">
-		<a href="admin_dashboard.php">Dashboard</a>
-		<a href="manage_students.php">Students</a>
-		<a href="manage_internships.php">Internships</a>
-		<a href="register_user.php">Register User</a>
-		<a href="logout.php">Logout</a>
+		<a href="admin_dashboard.php">🏠 Dashboard</a>
+		<a href="manage_students.php">🎓 Students</a>
+		<a href="manage_internships.php" class="active">🏢 Internships</a>
+		<a href="register_user.php">👤 Register User</a>
+		<a href="logout.php">🚪 Logout</a>
     </div>
 
 	<div class="hero-card">
