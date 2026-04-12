@@ -70,7 +70,7 @@ if (isset($_POST['login'])) {
 <div class="login-container">
 
 	<!-- Left sode (form) -->
-    <div class="login-box">
+    <div class="login-card">
 		<h1>Welcome Back 👋🏻</h1>
 		<p class="subtitle">Internship Management System</p>
 
@@ -89,8 +89,9 @@ if (isset($_POST['login'])) {
 	<div class="login-visual">
 		<h2>Manage Internships Easily</h2>
 		<p>Track students, internships, and assessments all in one place.</p>
-		<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="150">
+		<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="180" style="margin-bottom:20px;">
     </div>
 
 </div>
 </body>
+</html>
