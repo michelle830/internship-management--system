@@ -230,14 +230,15 @@ $result = $conn->query("SELECT * FROM students ORDER BY student_id ASC");
 <div class="container">
 
 	<div class="navbar">
-		<a href="admin_dashboard.php">Dashboard</a>
-		<a href="manage_students.php">Students</a>
-		<a href="manage_internships.php">Internships</a>
-		<a href="register_user.php">Register User</a>
-		<a href="logout.php">Logout</a>
+		<a href="admin_dashboard.php">🏠 Dashboard</a>
+		<a href="manage_students.php" class="active">🎓 Students</a>
+		<a href="manage_internships.php">🏢 Internships</a>
+		<a href="register_user.php">👤 Register User</a>
+		<a href="logout.php">🚪 Logout</a>
     </div>
 
 	<div class="hero-card">
+		<h3><img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" width="24"> Student Management</h3>
 		<div class="icon-title">
 			<span>🎓</span>
 			<h1>Manage Students</h1>
@@ -283,8 +284,15 @@ $result = $conn->query("SELECT * FROM students ORDER BY student_id ASC");
 			</div>
     	<?php endif; ?>
 
+		<?php if($result->num_rows == 0): ?>
+			<div class="card" style="text-align:center;">
+				<img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" width="120">
+				<p>No student records found</p>
+		    </div>
+		<?php endif; ?>
+
     	<!-- Add Student Form -->
-		<div class="card">
+		<div class="card fade-in">
             <h3>Add New Student</h3>
     	    <form method="POST">
         	    <label>Name</label>
