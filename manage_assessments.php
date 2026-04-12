@@ -129,11 +129,11 @@ $stmt2->close();
 <div class="container">
 
 	<div class="navbar">
-		<a href="assessor_dashboard.php">Dashboard</a>
-		<a href="view_assigned_students.php">Assigned Students</a>
-		<a href="manage_assessments.php">Assessments</a>
-		<a href="student_records.php">Student Records</a>
-		<a href="logout.php">Logout</a>
+		<a href="assessor_dashboard.php">🏠 Dashboard</a>
+		<a href="view_assigned_students.php">👥 Assigned Students</a>
+		<a href="manage_assessments.php" class="active">📝 Assessments</a>
+		<a href="student_records.php">📊 Student Records</a>
+		<a href="logout.php">🚪 Logout</a>
     </div>
 
 	<div class="hero-card">
@@ -148,7 +148,7 @@ $stmt2->close();
     <?php if($message != ""): ?>
 		<div class="card">
 			<div class="<?php echo(strpos($message, 'successfully') !== false) ? 'success' : 'error'; ?>">
-				<?php echo htmlspecialchard($message); ?>
+				<?php echo htmlspecialchars($message); ?>
 	        </div>
 	    </div>
 	<?php endif; ?>
