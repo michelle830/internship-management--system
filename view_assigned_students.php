@@ -35,27 +35,50 @@ $stmt->close();
 <html>
 <head>
     	<title>View Assigned Students</title>
+		<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    	<h1>Assigned Students</h1>
-    	<a href="assessor_dashboard.php">Back to Dashboard</a>
-    	<hr>
+<div class="container">
 
-    	<table border="1" cellpadding="5">
-        	<tr>
+	<div class="navbar">
+		<a href="assesor_dashboard.php">🏠 Dashboard</a>
+		<a href="view_assigned_students.php" class="active">👥 Students</a>
+		<a href="manage_assessments.php">📝 Assessments</a>
+		<a href="student_records.php">📊 Records</a>
+		<a href="logout.php">🚪 Logout</a>
+    </div>
+
+	<div class="hero-card">
+		<div class="icon-title">
+			<span>👥</span>
+    	    <h1>Assigned Students</h1>
+        </div>
+    	<p>View the students assigned to you for internship assessment.</p>
+    </div>
+
+	<div class="card">
+		<h2>Student List</h2>
+		<div class="table-wrapper">
+			<table>
+        	    <tr>
             		<th>Internship ID</th>
             		<th>Student ID</th>
             		<th>Name</th>
             		<th>Matric No</th>
-        	</tr>
-        	<?php while($row = $students->fetch_assoc()) { ?>
-        	<tr>
+        	    </tr>
+        	
+				<?php while($row = $students->fetch_assoc()) { ?>
+        	    <tr>
             		<td><?php echo htmlspecialchars($row['internship_id']); ?></td>
             		<td><?php echo htmlspecialchars($row['student_id']); ?></td>
             		<td><?php echo htmlspecialchars($row['student_name']); ?></td>
             		<td><?php echo htmlspecialchars($row['matric_no']); ?></td>
-        	</tr>
-        	<?php } ?>
-    	</table>
+        	    </tr>
+        	    <?php } ?>
+    	    </table>
+        </div>
+    </div>
+	
+</div>
 </body>
 </html>
