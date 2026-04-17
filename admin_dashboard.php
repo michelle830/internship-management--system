@@ -100,6 +100,35 @@ $user = $result->fetch_assoc();
 		<p><strong>Current Time:</strong> <span id="currentTime"></span></p>
     </div>
 
+	<!-- Quick Actions -->
+	<div class="card quick-actions-card">
+		<h2>🚀 Quick Actions</h2>
+		<div class="action-row">
+
+			<div class="action-item">
+			    <a href="manage_students.php" class="btn action-btn">🎓 Manage Students</a>
+				<span class="help-icon">ℹ︎
+					<span class="tooltip-text">View, add, edit, and delete student records.</span>
+                </span>
+            </div>
+
+			<div class="action-item">
+			    <a href="manage_internships.php" class="btn action-btn">🏢 Manage Internships</a>
+				<span class="help-icon">ℹ︎
+					<span class="tooltip-text">Assign students to internships and manage company details.</span>
+                </span>
+            </div>
+
+			<div class="action-item">
+			    <a href="register_user.php" class="btn action-btn">👤 Register User</a>
+				<span class="help-icon">ℹ︎
+					<span class="tooltip-text">Create login accounts for assessors or other users.</span>
+                </span>
+            </div>
+
+        </div>
+    </div>
+
 	<!-- Stats -->
 	 <div class="stats">
 		<div class="stat-box">
@@ -115,16 +144,6 @@ $user = $result->fetch_assoc();
 		<div class="stat-box">
 			<h3>📝 Assessments</h3>
 			<p>30</p>
-        </div>
-    </div>
-
-	<!-- Quick Actions -->
-	<div class="card">
-		<h2>Quick Actions</h2>
-		<div class="action-row">
-			<a href="manage_students.php" class="btn">🎓 Manage Students</a>
-			<a href="manage_internships.php" class="btn">🏢 Manage Internships</a>
-			<a href="register_user.php" class="btn">👤 Register User</a>
         </div>
     </div>
 
