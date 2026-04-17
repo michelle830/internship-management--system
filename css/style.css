@@ -102,7 +102,7 @@ hr {
     gap: 10px;
     align-items: center;
     background: rgba(255, 255, 255, 0.92);
-    padding: 8px 14px;
+    padding: 8px 4px;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     margin-bottom: 18px;
@@ -119,6 +119,7 @@ hr {
     padding: 8px 14px;
     border-radius: 10px;
     transition: all 0.25s ease;
+    white-space: nowrap;
 }
 
 .navbar a:hover {
@@ -324,7 +325,7 @@ textarea {
 
 /* Buttons */
 button,
-.btn{
+.btn:not(.action-btn){
     display: inline-block;
     background: linear-gradient(135deg, #5b5cf0, #00c6ff);
     color: #fff;
@@ -635,7 +636,7 @@ td button {
 
 /* Right Side */
 .login-visual {
-    width: 60%;
+    width: 20%;
     min-width: 0;
     background: linear-gradient(135deg,rgba(102,126,234,0.9), rgba(0,198,255,0.9)),
                 url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d');
@@ -684,4 +685,155 @@ img {
     background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+#notifPanel p {
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e7eb;
+    margin: 0;
+}
+
+#notifPanel p:last-child {
+    border-bottom: none;
+}
+
+.info {
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Quick Actions Styling */
+.quick-actions.card {
+    padding: 28px 26px;
+}
+
+.quick-actions.card h2 {
+    margin-bottom: 24px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f2a44;
+}
+
+.action-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.action-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 230px;
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    color: white !important;
+    background: linear-gradient(135deg, #5b5cf0, #00c6ff) !important;
+    box-shadow: 0 10px 24px rgba(91, 92, 240, 0.25);
+    transition: all 0.25s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(66, 133, 244, 0.28);
+}
+
+.help-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #eef3ff;
+    color: #4b5fd1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid #d9e3ff;
+    flex-shrink: 0;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    width: 240px;
+    background: #1f2a44;
+    color: #fff;
+    text-align: left;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    position: absolute;
+    top: 38px; 
+    left: 50%;
+    transform: translateX(-50%);
+    transition: opacity 0.2s ease;
+    z-index: 20;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.help-icon:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Notificatio style */
+.notif-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    color: #3b82f6;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 10px;
+    transition: 0.2s;
+    white-space: nowrap;
+    margin-left: -60px;
+}
+
+.notif-box:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: #2563eb;
+}
+
+.notif-panel {
+    position: absolute;
+    right: 30px;
+    top: 80px;
+    width: 300px;
+    z-index: 999;
+}
+
+.notif-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.close-btn:hover {
+    background: rgba(0,0,0,0.1);
 }
