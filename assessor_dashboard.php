@@ -51,15 +51,28 @@ $stmt->close();
     	<script>
         	// Auto-update current time every second
         	function updateTime() {
-            		const now = new Date();
-            		document.getElementById("currentTime").innerHTML = 
-                		now.getFullYear() + "-" +
-                		String(now.getMonth()+1).padStart(2,'0') + "-" +
-                		String(now.getDate()).padStart(2,'0') + " " +
-                		String(now.getHours()).padStart(2,'0') + ":" +
-                		String(now.getMinutes()).padStart(2,'0') + ":" +
-                		String(now.getSeconds()).padStart(2,'0');
+            	const now = new Date();
+            	document.getElementById("currentTime").innerHTML = 
+            		now.getFullYear() + "-" +
+            		String(now.getMonth()+1).padStart(2,'0') + "-" +
+            		String(now.getDate()).padStart(2,'0') + " " +
+                	String(now.getHours()).padStart(2,'0') + ":" +
+            		String(now.getMinutes()).padStart(2,'0') + ":" +
+            		String(now.getSeconds()).padStart(2,'0');
         	}
+
+			// Live search with AJAX
+        	function loadStudents(query) {
+            	const xhr = new XMLHttpRequest();
+            	xhr.open("GET", "search_students.php?q=" + encodeURIComponent(query), true);
+        		xhr.onload = function() {
+            		if (xhr.status === 200) {
+                			document.getElementById("results").innerHTML = xhr.responseText;
+            		}	
+        		};
+        		xhr.send();
+        	}
+
         	setInterval(updateTime, 1000);
         	window.onload = function() {
             		updateTime();
@@ -67,41 +80,79 @@ $stmt->close();
             		checkNotifications(); // initial notification check
         	};
 
-        	// Live search with AJAX
-        	function loadStudents(query) {
-            		const xhr = new XMLHttpRequest();
-            		xhr.open("GET", "search_students.php?q=" + encodeURIComponent(query), true);
-            		xhr.onload = function() {
-                		if (xhr.status === 200) {
-                    			document.getElementById("results").innerHTML = xhr.responseText;
-                		}	
-            		};
-            		xhr.send();
-        	}
-
         	// Poll for notifications
         	function checkNotifications() {
-            		fetch("fetch_notifications.php")
-                		.then(response => response.json())
-                		.then(data => {
-                    			data.forEach(notification => {
-                        			// Simple alert (replace with toast for better UX)
-                        			alert(notification.message);
-                    			});
-                		});
+            	fetch("fetch_notifications.php")
+            		.then(response => response.json())
+            		.then(data => {
+						document.getElementById("notifCount").innerText = data.length;
+
+						let html = "";
+
+						if (data.length === 0) {
+							html = "<p>No new notifications</p>";
+						} else {
+                			data.forEach(notification => {
+                        		html += "<p>" + notification.message + "</p>";
+                    		});
+                        }
+
+						document.getElementById("notifList").innerHTML = html;
+                	});
         	}
-        	setInterval(checkNotifications, 30000); // check every 30 seconds
+
+			document.addEventListener("DOMContentLoaded", function () {
+				updateTime();
+				loadStudents("");
+				checkNotifications();
+
+				setInterval(updateTime, 1000);
+				setInterval(checkNotifications, 30000);
+
+				document.getElementById("notificationBox").onclick = function () {
+					const panel = document.getElementById("notifPanel");
+					panel.style.display = (panel.style.display === "none") ? "block" : "none";
+				};
+			});
+
+			document.addEventListener("DOMContentLoaded", function () {
+
+				document.getElementById("notificationBox").onclick = function () {
+					const panel = document.getElementById("notifPanel");
+					panel.style.display = (panel.style.display === "none") ? "block" : "none";
+				};
+
+				document.getElementById("closeNotif").onclick = function () {
+					document.getElementById("notifPanel").style.display = "none";
+				};
+			});
     	</script>
+
 </head>
 <body>
 <div class="container">
 
 	<div class="navbar">
+		<div id="notificationBox" class="notif-box">
+			🔔 <span id="notifCount">0</span>
+        </div>
+
 		<a href="assessor_dashboard.php" class="active">🏠 Dashboard</a>
 		<a href="view_assigned_students.php">👥 Students</a>
 		<a href="manage_assessments.php">📝 Assessments</a>
 		<a href="student_records.php">📊 Records</a>
 		<a href="logout.php">🚪 Logout</a>
+    </div>
+
+	<div id="notifPanel" class="card notif-panel" style="display:none;">
+
+		<div class="notif-header">
+		    <h3>🔔 Notifications</h3>
+			<span id="closeNotif" class="close-btn">❌</span>
+        </div>
+
+		<div id="notifList">No notifications</div>
+
     </div>
 
 	<div class="hero-card">
@@ -126,15 +177,35 @@ $stmt->close();
     	<div id="results"></div>
     </div>
 
-    <div class="card">
+    <div class="card quick-actions">
     	<h2>⚡️ Quick Actions</h2>
 		<div class="action-row">
-        	<a href="view_assigned_students.php" class="btn">👥 View Assigned Students</a>
-        	<a href="manage_assessments.php" class="btn">📝 Manage Assessments</a>
-        	<a href="student_records.php" class="btn">📊 Student Records</a>
+
+			<div class="action-item">
+        	    <a href="view_assigned_students.php" class="btn action-btn">👥 View Assigned Students</a>
+				<span class="help-icon">ℹ︎
+					<span class="tooltip-text">View the students assigned to you.</span>
+                </span>
+            </div>
+
+			<div class="action-item">
+        	    <a href="manage_assessments.php" class="btn action-btn">📝 Manage Assessments</a>
+				<span class="help-icon">ℹ︎
+					<span class="tooltip-text">Enter marks and evaluate students.</span>
+                </span>
+            </div>
+
+			<div class="action-item">
+                <a href="student_records.php" class="btn action-btn">📊 Student Records</a>
+				<span class="help-icon">ℹ︎
+					<span class="tooltip-text">View student results and reports.</span>
+                </span>
+            </div>
+
         </div>
     </div>
 
 </div>
 </body>
+</html>
 
