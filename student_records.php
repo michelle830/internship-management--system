@@ -179,7 +179,7 @@ if (isset($_POST['download_pdf']) && $student_info) {
 <div class="container">
 
 	<div class="navbar">
-		<a href="assessor_dashhboard.php">🏠 Dashboard</a>
+		<a href="assessor_dashboard.php">🏠 Dashboard</a>
 		<a href="view_assigned_students.php">👥 Assigned Students</a>
 		<a href="manage_assessments.php">📝 Assessments</a>
 		<a href="student_records.php" class="active">📊 Student Records</a>
@@ -224,7 +224,7 @@ if (isset($_POST['download_pdf']) && $student_info) {
 
 	    <!-- Student Info -->
 		<div class="card">
-			<<h3>Student Information</h3>
+			<h3>Student Information</h3>
     	    <p><strong>Name:</strong> <?php echo htmlspecialchars($student_info['student_name']); ?></p>
     	    <p><strong>Matric No:</strong> <?php echo htmlspecialchars($student_info['matric_no']); ?></p>
     	    <p><strong>Company:</strong> <?php echo htmlspecialchars($student_info['company_name']); ?></p>

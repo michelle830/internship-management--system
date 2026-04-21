@@ -41,7 +41,7 @@ $stmt->close();
 <div class="container">
 
 	<div class="navbar">
-		<a href="assesor_dashboard.php">🏠 Dashboard</a>
+		<a href="assessor_dashboard.php">🏠 Dashboard</a>
 		<a href="view_assigned_students.php" class="active">👥 Students</a>
 		<a href="manage_assessments.php">📝 Assessments</a>
 		<a href="student_records.php">📊 Records</a>
