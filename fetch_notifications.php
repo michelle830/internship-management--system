@@ -22,19 +22,15 @@ if(!isset($_SESSION['user_id']) || $_SESSION['role'] != 'assessor') {
 $assessor_id = $_SESSION['user_id'];
 
 // Fetch unread notifications
-$stmt = $conn->prepare("SELECT id, message, created_at FROM notifications WHERE assessor_id = ? AND is_read = 0 ORDER BY created_at DESC");
+$stmt = $conn->prepare("SELECT id, message, is_read, created_at FROM notifications WHERE assessor_id = ? ORDER BY is_read ASC, created_at DESC");
 $stmt->bind_param("i", $assessor_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
 $notifications = [];
 while ($row = $result->fetch_assoc()) {
+		$row['is_read'] = (int)$row['is_read'];
     	$notifications[] = $row;
-
-    	// Mark as read immediately
-    	$update = $conn->prepare("UPDATE notifications SET is_read = 1 WHERE id = ?");
-   	$update->bind_param("i", $row['id']);
-    	$update->execute();
 }
 
 echo json_encode($notifications);

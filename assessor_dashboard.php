@@ -85,21 +85,55 @@ $stmt->close();
             	fetch("fetch_notifications.php")
             		.then(response => response.json())
             		.then(data => {
-						document.getElementById("notifCount").innerText = data.length;
+						document.getElementById("notifCount").innerText = data.filter(n => n.is_read == 0).length;
 
 						let html = "";
 
 						if (data.length === 0) {
-							html = "<p>No new notifications</p>";
+							html = "<p>No notifications</p>";
 						} else {
                 			data.forEach(notification => {
-                        		html += "<p>" + notification.message + "</p>";
+								let cssClass = Number(notification.is_read) === 0 ? "notif-unread" : "notif-read";
+
+								let tickButton = (Number(notification.is_read) === 0)
+									? `<button onclick="markRead(${notification.id})">✔️</button>`
+									: "";
+                        		html += `
+									<div class="notif-item ${cssClass}">
+										<span>${notification.message}</span>
+										${tickButton}
+										<button onclick="deleteNotif(${notification.id})">❌</button>
+									</div>
+								`;
                     		});
                         }
-
 						document.getElementById("notifList").innerHTML = html;
-                	});
+                	})
+					.catch(err => console.error("Notification fetch error:", err));
         	}
+
+			function markRead(id) {
+				console.log("Marking read:", id);
+				fetch("mark_notifications_read.php", {
+					method: "POST",
+					headers: {"Content-Type": "application/x-www-form-urlencoded"},
+					body: "id=" + id
+				})
+				.then(response => response.json())
+				.then(result => {
+					console.log("Mark read result:", result)
+					checkNotifications();
+				})
+				.catch(err => console.error("Mark read error:", err));
+			}
+
+			function deleteNotif(id) {
+				fetch("delete_notification.php", {
+					method: "POST",
+					headers: {"Content-Type": "application/x-www-form-urlencoded"},
+					body: "id=" + id
+				}).then(() => checkNotifications());
+			}
 
 			document.addEventListener("DOMContentLoaded", function () {
 				updateTime();
@@ -113,17 +147,13 @@ $stmt->close();
 					const panel = document.getElementById("notifPanel");
 					panel.style.display = (panel.style.display === "none") ? "block" : "none";
 				};
-			});
-
-			document.addEventListener("DOMContentLoaded", function () {
-
-				document.getElementById("notificationBox").onclick = function () {
-					const panel = document.getElementById("notifPanel");
-					panel.style.display = (panel.style.display === "none") ? "block" : "none";
-				};
-
-				document.getElementById("closeNotif").onclick = function () {
+					
+				document.getElementById("closeNotif").onclick = function() {
 					document.getElementById("notifPanel").style.display = "none";
+					fetch("mark_notifications_read.php")
+						.then(response => response.json())
+						.then(result => console.log("Marked as read:", result))
+						.catch(err => console.error("Mark read error:", err));
 				};
 			});
     	</script>

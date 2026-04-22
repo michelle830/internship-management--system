@@ -64,7 +64,28 @@ if(isset($_POST['add'])) {
         	$check->close();
         	$stmt = $conn->prepare("INSERT INTO internships (student_id, assessor_id, company_name, supervisor_name, duration, start_date, end_date) VALUES (?, ?, ?, ?, ?, ?, ?)");
         	$stmt->bind_param("iisssss", $student_id, $assessor_id, $company_name, $supervisor_name, $duration, $start_date, $end_date);
-        	$_SESSION['flash_message'] = $stmt->execute() ? "Internship added successfully!" : "Error: Could not add internship.";
+
+			if($stmt->execute()){
+        		$_SESSION['flash_message'] = "Internship added successfully!";
+
+				// Fetch student name for a readable message
+				$student_lookup = $conn->prepare("SELECT student_name FROM students WHERE student_id=?");
+				$student_lookup->bind_param("i", $student_id);
+				$student_lookup->execute();
+				$student_result = $student_lookup->get_result();
+				$student_row = $student_result->fetch_assoc();
+				$student_name = $student_row['student_name'];
+				$student_lookup->close();
+
+				// Insert notification for the assigned assessor
+				$notif_message = "New student assigned: <strong>$student_name</strong> to your supervision.";
+				$notif = $conn->prepare("INSERT INTO notifications (assessor_id, message, is_read, created_at) VALUES (?, ?, 0, NOW())");
+				$notif->bind_param("is", $assessor_id, $notif_message);
+				$notif->execute();
+				$notif->close();
+			} else {
+				$_SESSION['flash_message'] = "Error: Could not add internship.";
+			}
         	$stmt->close();
     	}
 
